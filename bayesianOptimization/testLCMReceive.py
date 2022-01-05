@@ -15,6 +15,7 @@ def my_handler(channel, data):
 
 def RobotSoftwareSimulation(parameters):
     lc.handle()
+
     # calculate reward from LCM messages, if needed
     return reward
 
@@ -24,10 +25,18 @@ def publishParameters(lc, msg):  # publishes parameters to Robot-Software
     msg.test = 1.0;
     lc.publish("DCMPC_PARAM", msg.encode())
 
-
 lc = lcm.LCM()
-subscription = lc.subscribe("DCMPC_REWARDS", my_handler)
-msg = dcmpc_parametrization_lcmt()
+subscription = lc.subscribe("DCMPC_REWARDS", my_handler)    # incoming messages from Robot-Software (rewards)
+msg = dcmpc_parametrization_lcmt()                          # messages to output to Robot-Software (parameters)
+
+p_bounds = {}
+n_params = 12
+for i in range(n_params):
+    p_bounds[i]
+bounds = (-50, 50)
+for i in n_params:
+    p_bounds[i] = bounds 
+
 
 while(1): # main loop
     lc.handle()   # receive lcm message
