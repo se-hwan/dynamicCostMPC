@@ -7,6 +7,7 @@ def black_box_function(**p):
     purposes think of the internals of this function, i.e.: the process
     which generates its output values, as unknown.
     """
+    test1 = 0
     test = [];
     for i in range(3):
         key = "p" + str(i)
