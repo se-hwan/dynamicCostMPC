@@ -2,15 +2,17 @@ import lcm
 from dcmpc_reward_lcmt import dcmpc_reward_lcmt
 from dcmpc_parametrization_lcmt import dcmpc_parametrization_lcmt
 from bayes_opt import BayesianOptimization
+from bayes_opt.logger import JSONLogger
+from bayes_opt.event import Events
 
 global reward, lc, msg
 
 def my_handler(channel, data):
     msg = dcmpc_reward_lcmt.decode(data)
-    print("Received message on channel \"%s\"" % channel)
-    print("   gravity   = %s" % str(msg.survival_time))
-    print("")
-    global reward 
+    #print("Received message on channel \"%s\"" % channel)
+    #print("   gravity   = %s" % str(msg.survival_time))
+    #print("")
+    global reward, iteration
     reward = msg.survival_time
 
 def RobotSoftwareSimulation(**p):
@@ -42,7 +44,7 @@ for i in range(n_params):
     param_id = 'p' + '{:0>2}'.format(i);
     key.append(param_id)
 
-bounds = (0, 50)
+bounds = (0, 100)
 for i in key:
     p_bounds[i] = bounds 
 
@@ -51,22 +53,8 @@ optimizer = BayesianOptimization(f=RobotSoftwareSimulation,
                                  pbounds=p_bounds,
                                  verbose=2,
                                  random_state=1)
+optimizer.maximize(init_points=1, n_iter=1)
+logger = JSONLogger(path="./logs.json")
+optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
+optimizer.maximize(init_points=2, n_iter=5)
 
-optimizer.maximize(init_points=5, n_iter=10)
-
-print(optimizer.max)
-
-for i, res in enumerate(optimizer.res):
-    print("Iteration {}: \n\t{}".format(i,res))
-
-
-'''
-while(1): # main loop
-    lc.handle()   # receive lcm message
-    print("survival time: ", reward)
-    # bayesian optimization calculation
-    # determine next parameter to evaluate
-    print("Publishing message")
-    publishParameters(lc, msg)
-
-'''
