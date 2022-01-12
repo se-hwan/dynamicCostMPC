@@ -1,7 +1,7 @@
 clear; clc;
 
 %% load and parse json data
-fname = 'fwd_running.json'; 
+fname = 'spinning_BO.json'; 
 fid = fopen(fname); 
 raw = fread(fid,inf); 
 str = char(raw'); 
@@ -26,4 +26,5 @@ end
 
 
 %% plotting and analysis
-max(target_val)
+[max_target, max_idx] = max(target_val);
+max_param = param_val(max_idx, :)
