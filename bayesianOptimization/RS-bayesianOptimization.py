@@ -21,6 +21,7 @@ def RobotSoftwareSimulation(**p):
         param.append(p[key]);
         msg.Q_diag[i] = param[i];
         #msg.Q_alpha[i] = param[i];
+        #msg.Q_PN[i] = param[i];
     lc.publish("DCMPC_PARAM", msg.encode())
     lc.handle()
     return reward
@@ -47,4 +48,4 @@ optimizer = BayesianOptimization(f=RobotSoftwareSimulation,
 optimizer.maximize(init_points=0, n_iter=0)
 logger = JSONLogger(path="./data/logs.json")
 optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
-optimizer.maximize(init_points=10, n_iter=500, acq="ei", xi=1e-4)
+optimizer.maximize(init_points=10, n_iter=2000, acq="ei", xi=1e-4)

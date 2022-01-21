@@ -1,2 +1,4 @@
 data/*.csv
 data/*.json
+data/*.bin
+data/data_obsolete/*
