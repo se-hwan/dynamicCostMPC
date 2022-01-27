@@ -6,7 +6,7 @@
 clear; clc;
 
 %% eigendecomposition
-N = 5;                  % dimension
+N = 12;                  % dimension
 H = rand(N, N);         % NxN matrix from random uniform distribution [0,1]
 Q = H'*H;               % Positive semi-definite matrix
 
@@ -17,7 +17,7 @@ disp("Q decomposition"); disp(V*D*V');
 disp("Q vector space"); disp(v_space*v_space');
 
 %% random basis vector generation
-N_basis = 12;
+N_basis = 3;
 basis = zeros(N_basis, N_basis);
 
 basis(:,1) = randn(N_basis, 1);
@@ -37,6 +37,14 @@ end
 
 disp("Random orthogonal basis vectors");
 disp(basis);
+
+test = basis*diag(randn(1, N_basis))*basis';
+try chol(test)
+    disp('Matrix is symmetric positive definite.')
+catch ME
+    disp('Matrix is not symmetric positive definite')
+end
+
 writematrix(basis, "basis.txt")
 
 

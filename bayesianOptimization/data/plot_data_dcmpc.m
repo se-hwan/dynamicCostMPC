@@ -1,20 +1,20 @@
 clear; clc;
 
 %% select data files
-RS_data = 'sideways_diag_RS.bin';
-BO_data = 'fwd_diag_BO.json';
+RS_data = 'DCMPC_sim_data.bin';
+BO_data = 'logs.json';
 
 %% load and parse data
 [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
 [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
 %% plotting
-hold on;
-plot(time{max_idx+1}, state{max_idx+1}(:,11))
-plot(time{max_idx+1}, cmd{max_idx+1}(:,2))
+figure; hold on;
+plot(time{max_idx+1}, state{max_idx+1}(:,9))
+plot(time{max_idx+1}, cmd{max_idx+1}(:,3))
 
 %% compare optimal Q values 
-idx_star = find(target_val > .90*max_target);
+[~, idx_star] = maxk(target_val, 10);
 det_star = zeros(length(idx_star), 1);
 Q_star = zeros(length(idx_star), 12);
 for i = 1:length(idx_star)
@@ -32,15 +32,16 @@ end
 xticks([1:12])
 xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\omega_z', 'v_x', 'v_y', 'v_z'})
 
-figure; hold on;
-for i = 1:length(idx_star)
-    plot(1:12, Q_star(i, :)./det_star(i), 'o-')
-end
-xticks([1:12])
-xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\omega_z', 'v_x', 'v_y', 'v_z'})
+% figure; hold on;
+% for i = 1:length(idx_star)
+%     plot(1:12, Q_star(i, :)./det_star(i), 'o-')
+% end
+% xticks([1:12])
+% xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\omega_z', 'v_x', 'v_y', 'v_z'})
 
 
-
+% figure; hold on;
+% plot(sort(target_val), 'o')
 
 
 
