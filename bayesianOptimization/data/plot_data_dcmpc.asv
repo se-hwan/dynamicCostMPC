@@ -8,24 +8,13 @@ BO_data = 'spinning_WBC_BO.json';
 [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
 [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
-%% plot states and commands
-
-% Variables:  var{i}(j, k) ith simulation, at jth time index, with kth element of the variable (state, cmd, etc.)
-% N_runs:     number of simulations performed for BO process
-% iter:       iteration of simulation number
-% time:       time for ith simulation
-% States:     [roll pitch yaw, x y z, omega_x, omega_y, omega_z, v_X, v_y, v_z]
-%             [n_time x 12]
-% Commands:   [v_xc, v_yv, omega_zc]
-%             [n_time x 3]
-
-% plots state and command of highest performance BO simulation
+%% plotting
 figure; hold on;
 plot(time{max_idx+1}, state{max_idx+1}(:,9))
 plot(time{max_idx+1}, cmd{max_idx+1}(:,3))
 
 %% compare optimal Q values 
-[~, idx_star] = maxk(target_val, 20);
+[~, idx_star] = maxk(target_val, 10);
 det_star = zeros(length(idx_star), 1);
 lambda_star = zeros(length(idx_star), 12);
 for i = 1:length(idx_star)
@@ -43,23 +32,23 @@ end
 xticks([1:12])
 xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\omega_z', 'v_x', 'v_y', 'v_z'})
 
+% figure; hold on;
+% for i = 1:length(idx_star)
+%     plot(1:12, Q_star(i, :)./det_star(i), 'o-')
+% end
+% xticks([1:12])
+% xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\omega_z', 'v_x', 'v_y', 'v_z'})
+
+
+% figure; hold on;
+% plot(sort(target_val), 'o')
+
+
 
 %% plot Q heatmap
 load('basis_RS.txt');
 
-% choose lambda, "max_param" variable is highest performing optimized eigenvalues
-% lambda = max_param;
-lambda = lambda_star(2,:); 
-
-Q_star = basis_RS*diag(lambda)*basis_RS';
-
-figure; hold on;
-imagesc(Q_star)
-colormap("winter") % seasonal theme for plots
-% colormap("autumn") % for something spicier
-colorbar
-axis tight
-set(gca, 'YDir', 'reverse')
+Q_star = basis_RS*diag(lambda_star)*basis_RS';
 
 
 
