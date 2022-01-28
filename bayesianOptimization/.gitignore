@@ -1,4 +1,5 @@
 data/*.csv
 data/*.json
 data/*.bin
-data/data_obsolete/*
+__pycache__/*
+__pycache__
