@@ -1,8 +1,8 @@
 clear; clc;
 
 %% select data files
-RS_data = 'DCMPC_sim_data.bin';
-BO_data = 'logs.json';
+RS_data = 'spinning_WBC_RS.bin';
+BO_data = 'spinning_WBC_BO.json';
 
 %% load and parse data
 [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
