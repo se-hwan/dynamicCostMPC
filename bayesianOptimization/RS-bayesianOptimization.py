@@ -46,6 +46,11 @@ optimizer = BayesianOptimization(f=RobotSoftwareSimulation,
                                  verbose=2,
                                  random_state=1)
 optimizer.maximize(init_points=0, n_iter=0)
-logger = JSONLogger(path="./data/logs.json")
+vx = 0.5; vy = 0.5; wz = 1.2;
+path_name = "./data/BO/" + str(vx) + str(vy) + str(wz) + "_BO.json"
+logger = JSONLogger(path=path_name)
 optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
 optimizer.maximize(init_points=100, n_iter=500, acq="ei", xi=1e-4)
+
+
+

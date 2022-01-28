@@ -1,11 +1,12 @@
 clear; clc;
 
 %% select data files
-RS_data = 'spinning_WBC_RS.bin';
-BO_data = 'spinning_WBC_BO.json';
+filename = '';
+RS_data = 'RS/' + filename + '.bin';
+BO_data = 'BO/' + filename + '.json';
 
 %% load and parse data
-[N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
+% [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
 [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
 %% plot states and commands
