@@ -39,7 +39,10 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
         commands.append(row)
         command_count += 1
 
+ramp_rate = [0.5, 0.5, 1.0]
+
 print('Sweep over velocity commands successfully loaded! ', command_count, ' velocity commands are prepared.')
+print('Commands set to increase at rate: ', ramp_rate)
 print('Beginning Bayesian optimization process...')
 
 for cmd_idx in range(0, command_count):
@@ -47,6 +50,13 @@ for cmd_idx in range(0, command_count):
         list_doc = yaml.safe_load(f)
 
     list_doc['training_cmd'] = commands[cmd_idx]
+    sign = [0, 0, 0]
+    for c in range(0, 3):
+        if (commands[cmd_idx][c] < 0):
+            sign[c] = -1
+        else:
+            sign[c] = 1
+    list_doc['ramp_up_rate'] = [sign[0]*ramp_rate[0] sign[1]*ramp_rate[1] sign[2]*ramp_rate[2]]
 
     with open('../../config/DCMPC-training.yaml','w') as f:
         yaml.dump(list_doc, f, default_flow_style=False)
@@ -77,6 +87,3 @@ for cmd_idx in range(0, command_count):
 
     print("Bayesian optimization complete! Saving results...")
     os.rename('./data/RS/DCMPC_sim_data.bin', path_name_RS)
-
-
-
