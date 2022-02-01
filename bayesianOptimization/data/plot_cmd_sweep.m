@@ -2,7 +2,7 @@ clear; clc;
 
 %% velocity command spread
 
-N_d = 4; % resolution of command discretization
+N_d = 11; % resolution of command discretization
 
 vx_max = 4.5;
 vy_max = 3.5;
