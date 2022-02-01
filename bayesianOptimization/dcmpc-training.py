@@ -17,7 +17,7 @@ steady_state = 0
 def my_handler(channel, data):
     msg = dcmpc_reward_lcmt.decode(data)
     global reward, steady_state
-    reward = msg.survival_time
+    reward = msg.reward
     if (msg.steady_state):
         steady_state += 1
 
