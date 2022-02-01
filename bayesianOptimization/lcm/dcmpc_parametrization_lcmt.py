@@ -10,18 +10,14 @@ except ImportError:
 import struct
 
 class dcmpc_parametrization_lcmt(object):
-    __slots__ = ["Q_diag", "Q_rbf", "Q_alpha", "Q_PN", "test"]
+    __slots__ = ["Q_diag"]
 
-    __typenames__ = ["float", "float", "float", "float", "float"]
+    __typenames__ = ["float"]
 
-    __dimensions__ = [[12], [12], [45], [15], None]
+    __dimensions__ = [[12]]
 
     def __init__(self):
         self.Q_diag = [ 0.0 for dim0 in range(12) ]
-        self.Q_rbf = [ 0.0 for dim0 in range(12) ]
-        self.Q_alpha = [ 0.0 for dim0 in range(45) ]
-        self.Q_PN = [ 0.0 for dim0 in range(15) ]
-        self.test = 0.0
 
     def encode(self):
         buf = BytesIO()
@@ -31,10 +27,6 @@ class dcmpc_parametrization_lcmt(object):
 
     def _encode_one(self, buf):
         buf.write(struct.pack('>12f', *self.Q_diag[:12]))
-        buf.write(struct.pack('>12f', *self.Q_rbf[:12]))
-        buf.write(struct.pack('>45f', *self.Q_alpha[:45]))
-        buf.write(struct.pack('>15f', *self.Q_PN[:15]))
-        buf.write(struct.pack(">f", self.test))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -49,17 +41,13 @@ class dcmpc_parametrization_lcmt(object):
     def _decode_one(buf):
         self = dcmpc_parametrization_lcmt()
         self.Q_diag = struct.unpack('>12f', buf.read(48))
-        self.Q_rbf = struct.unpack('>12f', buf.read(48))
-        self.Q_alpha = struct.unpack('>45f', buf.read(180))
-        self.Q_PN = struct.unpack('>15f', buf.read(60))
-        self.test = struct.unpack(">f", buf.read(4))[0]
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if dcmpc_parametrization_lcmt in parents: return 0
-        tmphash = (0xd85190ba4600426d) & 0xffffffffffffffff
+        tmphash = (0x2e2a7093d8134a50) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

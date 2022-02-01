@@ -10,12 +10,16 @@ from bayes_opt import BayesianOptimization
 from bayes_opt.logger import JSONLogger
 from bayes_opt.event import Events
 
-global reward, lc, msg
+global reward, lc, msg, steady_state
+
+steady_state = 0
 
 def my_handler(channel, data):
     msg = dcmpc_reward_lcmt.decode(data)
-    global reward
+    global reward, steady_state
     reward = msg.survival_time
+    if (msg.steady_state):
+        steady_state += 1
 
 def RobotSoftwareSimulation(**p):
     param = []
@@ -79,11 +83,16 @@ for cmd_idx in range(0, command_count):
                                      verbose=2,
                                      random_state=1)
     optimizer.maximize(init_points=0, n_iter=0)
-    path_name_BO = "./data/BO/cmd_sweep_" + str(cmd_idx) + "_BO.json"
-    path_name_RS = "./data/RS/cmd_sweep_" + str(cmd_idx) + "_RS.bin"
-    logger = JSONLogger(path=path_name_BO)
+    path_name_BO = "./data/BO/cmd_sweep_" + str(cmd_idx)
+    path_name_RS = "./data/RS/cmd_sweep_" + str(cmd_idx) 
+    logger = JSONLogger(path=path_name_BO+'.json')
     optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
     optimizer.maximize(init_points=1, n_iter=5, acq="ei", xi=1e-4)
 
     print("Bayesian optimization complete! Saving results...")
-    os.rename('./data/RS/DCMPC_sim_data.bin', path_name_RS)
+    os.rename('./data/RS/DCMPC_sim_data.bin', path_name_RS+'.bin')
+    if (steady_state < 0.5):
+        os.rename(path_name_BO+'.json', path_name_BO + '_fail.json')
+        os.rename(path_name_RS+'.bin', path_name_RS + '_fail.bin')
+
+

@@ -10,14 +10,15 @@ except ImportError:
 import struct
 
 class dcmpc_reward_lcmt(object):
-    __slots__ = ["survival_time"]
+    __slots__ = ["reward", "steady_state"]
 
-    __typenames__ = ["float"]
+    __typenames__ = ["float", "boolean"]
 
-    __dimensions__ = [None]
+    __dimensions__ = [None, None]
 
     def __init__(self):
-        self.survival_time = 0.0
+        self.reward = 0.0
+        self.steady_state = False
 
     def encode(self):
         buf = BytesIO()
@@ -26,7 +27,7 @@ class dcmpc_reward_lcmt(object):
         return buf.getvalue()
 
     def _encode_one(self, buf):
-        buf.write(struct.pack(">f", self.survival_time))
+        buf.write(struct.pack(">fb", self.reward, self.steady_state))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -40,14 +41,15 @@ class dcmpc_reward_lcmt(object):
 
     def _decode_one(buf):
         self = dcmpc_reward_lcmt()
-        self.survival_time = struct.unpack(">f", buf.read(4))[0]
+        self.reward = struct.unpack(">f", buf.read(4))[0]
+        self.steady_state = bool(struct.unpack('b', buf.read(1))[0])
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if dcmpc_reward_lcmt in parents: return 0
-        tmphash = (0x3fbf0985e32010ba) & 0xffffffffffffffff
+        tmphash = (0x6bacd20dec674b08) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff) + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
