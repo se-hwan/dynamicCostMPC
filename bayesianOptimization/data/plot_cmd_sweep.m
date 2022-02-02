@@ -27,7 +27,7 @@ end
 
 %% save command sweep
 
-SAVE_MATRIX = true;
+SAVE_MATRIX = false;
 if SAVE_MATRIX
     writematrix(cmd_sweep, 'cmd_sweep_tmp.csv');
 end
