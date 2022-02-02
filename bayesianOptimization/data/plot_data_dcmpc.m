@@ -1,12 +1,12 @@
 clear; clc;
 
 %% select data files
-filename = '';
-RS_data = 'RS/' + filename + '.bin';
-BO_data = 'BO/' + filename + '.json';
+filename = 'cmd_sweep_1_fail';
+RS_data = append('RS/',filename,'.bin');
+BO_data = append('BO/',filename,'.json');
 
 %% load and parse data
-% [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
+[N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
 [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
 %% plot states and commands
@@ -22,8 +22,19 @@ BO_data = 'BO/' + filename + '.json';
 
 % plots state and command of highest performance BO simulation
 figure; hold on;
+xlabel('Time (s)'); ylabel('Angular velocity (rad/s)')
 plot(time{max_idx+1}, state{max_idx+1}(:,9))
 plot(time{max_idx+1}, cmd{max_idx+1}(:,3))
+
+figure; hold on;
+xlabel('Time (s)'); ylabel('Longitudinal velocity (m/s)')
+plot(time{max_idx+1}, state{max_idx+1}(:,10))
+plot(time{max_idx+1}, cmd{max_idx+1}(:,1))
+
+figure; hold on;
+xlabel('Time (s)'); ylabel('Lateral velocity (m/s)')
+plot(time{max_idx+1}, state{max_idx+1}(:,11))
+plot(time{max_idx+1}, cmd{max_idx+1}(:,2))
 
 %% compare optimal Q values 
 [~, idx_star] = maxk(target_val, 20);
@@ -49,15 +60,16 @@ xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\
 load('basis_RS.txt');
 
 % choose lambda, "max_param" variable is highest performing optimized eigenvalues
-% lambda = max_param;
-lambda = lambda_star(2,:); 
+lambda = max_param;
+% lambda = lambda_star(2,:); 
 
 Q_star = basis_RS*diag(lambda)*basis_RS';
 
 figure; hold on;
 imagesc(Q_star)
-colormap("winter") % seasonal theme for plots
-% colormap("autumn") % for something spicier
+% colormap("winter") % seasonal theme for plots
+colormap("autumn") % for something spicier
+% divergent colormap, change at 0
 colorbar
 axis tight
 set(gca, 'YDir', 'reverse')
