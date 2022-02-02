@@ -5,6 +5,8 @@ filename = 'cmd_sweep_1_fail';
 RS_data = append('RS/',filename,'.bin');
 BO_data = append('BO/',filename,'.json');
 
+BO_data = append('BO/BO_data_old',filename,'.json');
+
 %% load and parse data
 [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
 [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
@@ -57,7 +59,7 @@ xticklabels({'\psi', '\phi', '\theta', 'x', 'y', 'z', '\omega_x', '\omega_y', '\
 
 
 %% plot Q heatmap
-load('basis_RS.txt');
+load('basis_RS.csv');
 
 % choose lambda, "max_param" variable is highest performing optimized eigenvalues
 lambda = max_param;
