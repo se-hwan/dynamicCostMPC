@@ -1,11 +1,10 @@
 clear; clc;
 
 %% select data files
-filename = 'cmd_sweep_1_fail';
-RS_data = append('RS/',filename,'.bin');
-BO_data = append('BO/',filename,'.json');
-
-BO_data = append('BO/BO_data_old/',filename,'.json');
+filename = 'cmd_sweep_2';
+date = '2022-02-03_12-38-04/';
+RS_data = append('RS/',date,filename,'.bin');
+BO_data = append('BO/',date,filename,'.json');
 
 %% load and parse data
 [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);

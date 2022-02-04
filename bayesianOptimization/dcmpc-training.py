@@ -103,7 +103,7 @@ for cmd_idx in range(0, command_count):
     file_name_RS = folder_name_RS + "/cmd_sweep_" + str(cmd_idx+1) 
     logger = JSONLogger(path=file_name_BO+'.json')
     optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
-    optimizer.maximize(init_points=50, n_iter=250, acq="ei", xi=1e-4)
+    optimizer.maximize(init_points=50, n_iter=250, acq="ucb", kappa=0.5)
 
     print("Bayesian optimization complete! Saving results...")
     os.replace('./data/RS/DCMPC_sim_data.bin', file_name_RS+'.bin')
@@ -114,5 +114,8 @@ for cmd_idx in range(0, command_count):
     # output total time taken for one iteration of velocity command
     elapsed = time.time() - t
     print("Time taken for iteration ", cmd_idx+1, ": ", elapsed, " s")
+    
+    # reset steady state flag
+    steady_state = 0
 
 
