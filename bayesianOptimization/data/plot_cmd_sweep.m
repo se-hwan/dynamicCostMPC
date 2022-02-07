@@ -8,12 +8,20 @@ vy_max = 3.5;
 omega_max = 7.5;
 
 cmd_sweep = zeros(N_s, 3);
-for i = 1:N_s
-    vx_samp = vx_max/3 * randn(1, 1);
-    vy_samp = vy_max/3 * randn(1, 1);
-    wz_samp = omega_max/3 * randn(1, 1);
+
+% for i = 1:N_s % Gaussian sampling
+%     vx_samp = vx_max/3 * randn(1, 1);
+%     vy_samp = vy_max/3 * randn(1, 1);
+%     wz_samp = omega_max/3 * randn(1, 1);
+%     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
+% end
+for i = 1:N_s % Uniform sampling
+    vx_samp = 2*vx_max*(rand(1, 1) - 0.5);
+    vy_samp = 2*vy_max*(rand(1, 1) - 0.5);
+    wz_samp = 2*omega_max*(rand(1, 1) - 0.5);
     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 end
+
 
 figure;
 hold on; grid on;
@@ -26,7 +34,7 @@ for i = 1:N_s
 end
 
 %% save 3D command sweep
-SAVE_CMD_SWEEP= false;
+SAVE_CMD_SWEEP = true;
 if SAVE_CMD_SWEEP
     writematrix(cmd_sweep, 'cmd_sweep_tmp.csv');
 end
@@ -64,7 +72,7 @@ plot(vy_wz_sweep(:,2), vy_wz_sweep(:,3), 'bo')
 
 
 %% save 2D command slices
-SAVE_CMD_SLICE = true;
+SAVE_CMD_SLICE = false;
 if SAVE_CMD_SLICE
     writematrix(vx_vy_sweep, 'vx_vy_sweep_tmp.csv');
     writematrix(vx_wz_sweep, 'vx_wz_sweep_tmp.csv');
