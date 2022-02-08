@@ -66,15 +66,6 @@ for i = 1:length(cmd_fail)
 end
 % b_norm = nonzeros(b_norm);
 
-%% least-squares
-poly_order = 1;
-
-test_size = 0.1;
-train_set = true(size(values));
-train_set(1:floor(test_size*size(values,1))) = false;
-train_set = train_set(randperm(length(train_set)));
-test_set = ~train_set;
-
 %%
 N = length(values);
 A = zeros(12*N, 48);
