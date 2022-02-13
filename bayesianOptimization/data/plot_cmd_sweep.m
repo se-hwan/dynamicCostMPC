@@ -16,13 +16,13 @@ cmd_sweep = zeros(N_s, 3);
 %     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 % end
 for i = 1:N_s % Uniform sampling
-    vx_samp = 1.5*vx_max*(rand(1, 1) - 0.5);
-    vy_samp = 1.5*vy_max*(rand(1, 1) - 0.5);
-    wz_samp = 1*omega_max*(rand(1, 1) - 0.5);
+    vx_samp = 2.*vx_max*(rand(1, 1) - 0.5);
+    vy_samp = 2.*vy_max*(rand(1, 1) - 0.5);
+    wz_samp = 2.*omega_max*(rand(1, 1) - 0.5);
     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 end
 
-
+ 
 figure;
 hold on; grid on;
 xlabel('v_x (m/s)'); ylabel('v_y (m/s)'); zlabel('\omega_z (rad/s)')

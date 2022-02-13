@@ -17,7 +17,7 @@ disp("Q decomposition"); disp(V*D*V');
 disp("Q vector space"); disp(v_space*v_space');
 
 %% random basis vector generation
-N_basis = 3;
+N_basis = 12;
 basis = zeros(N_basis, N_basis);
 
 basis(:,1) = randn(N_basis, 1);
@@ -45,7 +45,7 @@ catch ME
     disp('Matrix is not symmetric positive definite')
 end
 
-writematrix(basis, "basis.txt")
+writematrix(basis, "basis.csv")
 
 
 %% plot unit sphere with orthogonal basis for sanity check
