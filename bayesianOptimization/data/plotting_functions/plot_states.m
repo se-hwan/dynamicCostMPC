@@ -1,4 +1,4 @@
-function p = plot_states(time, state, cmd)
+function p = plot_states(time, state, cmd, idx)
     % Variables:  var{i}(j, k) ith simulation, at jth time index, with kth element of the variable (state, cmd, etc.)
     % N_runs:     number of simulations performed for BO process
     % iter:       iteration of simulation number
@@ -11,16 +11,16 @@ function p = plot_states(time, state, cmd)
     % plots state and command of highest performance BO simulation
     figure; hold on;
     xlabel('Time (s)'); ylabel('Angular velocity (rad/s)')
-    plot(time{max_idx+1}, state{max_idx+1}(:,9))
-    plot(time{max_idx+1}, cmd{max_idx+1}(:,3))
+    plot(time{idx+1}, state{idx+1}(:,9))
+    plot(time{idx+1}, cmd{idx+1}(:,3))
     
     figure; hold on;
     xlabel('Time (s)'); ylabel('Longitudinal velocity (m/s)')
-    plot(time{max_idx+1}, state{max_idx+1}(:,10))
-    plot(time{max_idx+1}, cmd{max_idx+1}(:,1))
+    plot(time{idx+1}, state{idx+1}(:,10))
+    plot(time{idx+1}, cmd{idx+1}(:,1))
     
     figure; hold on;
     xlabel('Time (s)'); ylabel('Lateral velocity (m/s)')
-    plot(time{max_idx+1}, state{max_idx+1}(:,11))
-    plot(time{max_idx+1}, cmd{max_idx+1}(:,2))
+    plot(time{idx+1}, state{idx+1}(:,11))
+    plot(time{idx+1}, cmd{idx+1}(:,2))
 end

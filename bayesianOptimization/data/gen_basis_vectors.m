@@ -45,7 +45,7 @@ catch ME
     disp('Matrix is not symmetric positive definite')
 end
 
-writematrix(basis, "basis.csv")
+writematrix(basis, "bases/basis.csv")
 
 
 %% plot unit sphere with orthogonal basis for sanity check

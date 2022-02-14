@@ -1,8 +1,8 @@
 clear; clc;
 
 %% select data files
-filename = 'cmd_sweep_2';
-date = '2022-02-03_12-38-04/';
+filename = 'cmd_sweep_1';
+date = '2022-02-13_18-21-53/';
 RS_data = append('RS/',date,filename,'.bin');
 BO_data = append('BO/',date,filename,'.json');
 addpath(genpath('plotting_functions'));
@@ -12,7 +12,7 @@ addpath(genpath('plotting_functions'));
 [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
 %% plot states and commands
-plot_states(time, state, cmd);
+plot_states(time, state, cmd, max_idx);
 
 %% compare optimal Q values 
 
