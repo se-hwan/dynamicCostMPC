@@ -4,6 +4,7 @@
 *.asv
 *.bin
 *.json
+*.pyc
 
 .venv-BO/*
 

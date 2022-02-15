@@ -3,9 +3,9 @@ clear; clc;
 %% 3D velocity command sweep
 N_s = 500; % velocity command samples
 
-vx_max = 4.5;
-vy_max = 3.5;
-omega_max = 7.5;
+vx_max = 4.0; % 4,5
+vy_max = 1.0; % 3.5
+omega_max = 6.0; % 7.5
 
 cmd_sweep = zeros(N_s, 3);
 
@@ -16,9 +16,11 @@ cmd_sweep = zeros(N_s, 3);
 %     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 % end
 for i = 1:N_s % Uniform sampling
-    vx_samp = 2.*vx_max*(rand(1, 1) - 0.5);
-    vy_samp = 2.*vy_max*(rand(1, 1) - 0.5);
-    wz_samp = 2.*omega_max*(rand(1, 1) - 0.5);
+    vx_samp = 2.*vx_max*(rand - 0.5);
+    %vy_samp = 2.*vy_max*(rand - 0.5);
+    %wz_samp = 2.*omega_max*(rand - 0.5);
+    vy_samp = vy_max*rand;
+    wz_samp = omega_max*rand;
     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 end
 
@@ -36,7 +38,7 @@ end
 %% save 3D command sweep
 SAVE_CMD_SWEEP = true;
 if SAVE_CMD_SWEEP
-    writematrix(cmd_sweep, 'cmd_sweep_tmp.csv');
+    writematrix(cmd_sweep, 'cmd_sweep.csv');
 end
 
 %% 2D velocity command slice
