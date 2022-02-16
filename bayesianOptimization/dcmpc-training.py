@@ -150,20 +150,3 @@ for cmd_idx in range(0, command_count):
     
     # reset steady state flag
     steady_state = 0
-
-
-    
-'''
-    for idx in range(iter_rand):
-        rand_point = next(optimizer._queue)
-        optimizer.probe()
-        target = RobotSoftwareSimulation(**rand_point)
-        optimizer.register(params=rand_point, target=target)
-        print("Iteration: %3d Target value: %6.5" % (idx, target))
-    
-    for idx in range(iter_rand, iter_max):
-        next_point = optimizer.suggest(utility)
-        target = RobotSoftwareSimulation(**next_point)
-        optimizer.register(params=next_point, target=target)
-        print("Iteration: %3d Target value: %6.5" % (idx, target))
-'''
