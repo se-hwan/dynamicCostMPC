@@ -69,7 +69,6 @@ print('Beginning Bayesian optimization process...')
 print('Random initial points to evaluate: ', iter_rand)
 print('Maximum points to evaluate: ', iter_max)
 
-
 for cmd_idx in range(0, command_count):
 
     t = time.time()
@@ -112,7 +111,7 @@ for cmd_idx in range(0, command_count):
     logger = JSONLogger(path=file_name_BO+'.json')
     optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
     
-    utility = UtilityFunction(kind="ucb", kappa=2.5, xi=0.0)
+    utility = UtilityFunction(kind="ucb", kappa=2.0, xi=0.0)
 
     optimizer._prime_queue(iter_rand)
 
@@ -146,7 +145,6 @@ for cmd_idx in range(0, command_count):
 
     # output total time taken for one iteration of velocity command
     elapsed = time.time() - t
-    print("Time taken for iteration ", cmd_idx+1, ": ", elapsed, " s")
-    
+    print("Time taken for iteration ", cmd_idx+1, ": ", elapsed, " s\n")
     # reset steady state flag
     steady_state = 0
