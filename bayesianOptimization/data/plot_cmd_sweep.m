@@ -1,11 +1,11 @@
 clear; clc;
 
 %% 3D velocity command sweep
-N_s = 500; % velocity command samples
+N_s = 2000; % velocity command samples
 
-vx_max = 4.0; % 4,5
-vy_max = 1.0; % 3.5
-omega_max = 6.0; % 7.5
+vx_max = 4.5; % 4,5
+vy_max = 2.0; % 3.5
+omega_max = 7.0; % 7.5
 
 cmd_sweep = zeros(N_s, 3);
 
