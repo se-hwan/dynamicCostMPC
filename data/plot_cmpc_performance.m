@@ -3,9 +3,12 @@ close all
 clc
 
 %% select data file
-date = 'cmpc_2/';
-cmds = readmatrix(['RS/',date,'cmd_sweep.csv']);
-addpath(genpath('plotting_functions'));
+% date = 'cmpc_2/';
+% cmds = readmatrix(['RS/',date,'cmd_sweep.csv']);
+% addpath(genpath('plotting_functions'));
+
+load("cmpc_data.mat")
+cmds = cmpc_cmds.sweep;
 
 %% check for success/fail
 N = size(cmds,1);
@@ -30,5 +33,5 @@ xlabel('v_x')
 ylabel('v_y')
 zlabel('\omega_z')
 
-save('cmpc_data.mat','cmds')
+% save('cmpc_data.mat','cmds')
 

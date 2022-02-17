@@ -7,7 +7,12 @@ vx_max = 4.5; % 4,5
 vy_max = 2.0; % 3.5
 omega_max = 7.0; % 7.5
 
-cmd_sweep = zeros(N_s, 3);
+cmd_sweep = zeros(1, 3);
+
+%% load cmpc range
+load("cmpc_cmds.mat")
+
+%% sampling options
 
 % for i = 1:N_s % Gaussian sampling
 %     vx_samp = vx_max/3 * randn(1, 1);
@@ -15,15 +20,29 @@ cmd_sweep = zeros(N_s, 3);
 %     wz_samp = omega_max/3 * randn(1, 1);
 %     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 % end
+% for i = 1:N_s % Uniform sampling
+%     vx_samp = 2.*vx_max*(rand - 0.5);
+%     vy_samp = 2.*vy_max*(rand - 0.5);
+%     wz_samp = 2.*omega_max*(rand - 0.5);
+%     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
+% end
 
-for i = 1:N_s % Uniform sampling
-    vx_samp = 2.*vx_max*(rand - 0.5);
-    vy_samp = 2.*vy_max*(rand - 0.5);
-    wz_samp = 2.*omega_max*(rand - 0.5);
-    cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
+N_success = length(cmpc_cmds.success(:,1));
+
+j = 1;
+for i = 1:N_s/4
+    if (i > .6*N_s/4)
+        cmd_sweep(i,:) = cmpc_cmds.failure_sorted(j, :);
+        j = j+1;
+    else
+        cmd_sweep(i,:) = cmpc_cmds.success(i, :);
+    end
 end
+tmp_1 = cmd_sweep; tmp_1(:,3) = cmd_sweep(:,3)*-1; 
+cmd_sweep = [cmd_sweep; tmp_1];
+tmp_2 = cmd_sweep; tmp_2(:,2) = cmd_sweep(:,2)*-1; 
+cmd_sweep = [cmd_sweep; tmp_2];
 
- 
 figure;
 hold on; grid on;
 xlabel('v_x (m/s)'); ylabel('v_y (m/s)'); zlabel('\omega_z (rad/s)')
