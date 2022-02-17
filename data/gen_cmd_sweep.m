@@ -7,7 +7,7 @@ vx_max = 4.5; % 4,5
 vy_max = 3.0; % 3.5
 omega_max = 7.0; % 7.5
 
-cmd_sweep = zeros(1, 3);
+cmd_sweep = zeros(N_s, 3);
 
 %% load cmpc range
 load("cmpc_cmds.mat")
@@ -31,19 +31,8 @@ load("cmpc_cmds.mat")
 
 N_success = length(cmpc_cmds.success(:,1));
 
-j = 1;
-for i = 1:N_s/4
-    if (i > .8*N_s/4)
-        cmd_sweep(i,:) = cmpc_cmds.fail_sorted(j, :);
-        j = j+1;
-    else
-        cmd_sweep(i,:) = cmpc_cmds.success(i, :);
-    end
-end
-tmp_1 = cmd_sweep; tmp_1(:,3) = cmd_sweep(:,3)*-1; 
-cmd_sweep = [cmd_sweep; tmp_1];
-tmp_2 = cmd_sweep; tmp_2(:,2) = cmd_sweep(:,2)*-1; 
-cmd_sweep = [cmd_sweep; tmp_2];
+cmd_sweep(1:N_success,:) = cmpc_cmds.success;
+cmd_sweep(N_success+1:end, :) = cmpc_cmds.fail_sorted(1:(N_s-N_success), :);
 
 figure;
 hold on; grid on;
@@ -54,6 +43,7 @@ plot3(zeros(1, 10), zeros(1, 10),linspace(-omega_max, omega_max, 10),'c--')
 for i = 1:N_s
     plot3(cmd_sweep(i, 1), cmd_sweep(i,2), cmd_sweep(i,3), 'k.')
 end
+axis([-vx_max*1.1, vx_max*1.1, 0, vy_max*1.1, 0, omega_max*1.1])
 
 %% save 3D command sweep
 SAVE_CMD_SWEEP = true;

@@ -30,6 +30,6 @@ legend('successes','closest 200', 'next 200', 'rather far 200');
 cmpc_cmds = struct();
 cmpc_cmds.sweep = cmds;
 cmpc_cmds.success = good_cmds;
-cmpc_cmds.fail_sorted = bad_cmds;
+cmpc_cmds.fail_sorted = sorted_cmds;
 
 save("cmpc_cmds.mat")
