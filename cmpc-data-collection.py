@@ -4,7 +4,7 @@ import yaml, csv
 import lcm
 import numpy as np
 sys.path.append('./lcm')
-sys.path.append('../../config')
+sys.path.append('../config')
 from dcmpc_reward_lcmt import dcmpc_reward_lcmt
 from dcmpc_parametrization_lcmt import dcmpc_parametrization_lcmt
 from bayes_opt import BayesianOptimization
@@ -68,7 +68,7 @@ for cmd_idx in range(0, command_count):
     t = time.time()
 
     # overwrite yaml file with new commands
-    with open('../../config/DCMPC-training.yaml') as f:
+    with open('../config/DCMPC-training.yaml') as f:
         list_doc = yaml.safe_load(f)
     list_doc['training_cmd'] = commands[cmd_idx]
     sign = [0, 0, 0]
@@ -78,7 +78,7 @@ for cmd_idx in range(0, command_count):
         else:
             sign[c] = 1
     list_doc['ramp_up_rate'] = [sign[0]*ramp_rate[0], sign[1]*ramp_rate[1], sign[2]*ramp_rate[2]]
-    with open('../../config/DCMPC-training.yaml','w') as f:
+    with open('../config/DCMPC-training.yaml','w') as f:
         yaml.dump(list_doc, f, default_flow_style=False)
     print("Velocity command: ", commands[cmd_idx])
 

@@ -4,7 +4,7 @@ clear; clc;
 N_s = 500; % velocity command samples
 
 vx_max = 4.5; % 4,5
-vy_max = 2.0; % 3.5
+vy_max = 3.0; % 3.5
 omega_max = 7.0; % 7.5
 
 cmd_sweep = zeros(1, 3);
@@ -24,6 +24,8 @@ load("cmpc_cmds.mat")
 %     vx_samp = 2.*vx_max*(rand - 0.5);
 %     vy_samp = 2.*vy_max*(rand - 0.5);
 %     wz_samp = 2.*omega_max*(rand - 0.5);
+%     vy_samp = vy_max*rand;
+%     wz_samp = omega_max*rand;
 %     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 % end
 
@@ -31,8 +33,8 @@ N_success = length(cmpc_cmds.success(:,1));
 
 j = 1;
 for i = 1:N_s/4
-    if (i > .6*N_s/4)
-        cmd_sweep(i,:) = cmpc_cmds.failure_sorted(j, :);
+    if (i > .8*N_s/4)
+        cmd_sweep(i,:) = cmpc_cmds.fail_sorted(j, :);
         j = j+1;
     else
         cmd_sweep(i,:) = cmpc_cmds.success(i, :);

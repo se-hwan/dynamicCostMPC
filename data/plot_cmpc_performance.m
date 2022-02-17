@@ -3,17 +3,17 @@ close all
 clc
 
 %% select data file
-% date = 'cmpc_2/';
-% cmds = readmatrix(['RS/',date,'cmd_sweep.csv']);
-% addpath(genpath('plotting_functions'));
+date = '2022-02-17_12-40-29/';
+cmds = readmatrix(['RS/',date,'cmd_sweep.csv']);
+addpath(genpath('utility_functions'));
 
-load("cmpc_data.mat")
-cmds = cmpc_cmds.sweep;
+% load("cmpc_data.mat")
+% cmds = cmpc_cmds.sweep;
 
 %% check for success/fail
 N = size(cmds,1);
 cmds(:,end+1) = ones(N,1);
-figure
+
 for i = 1:N
     try
         filename = ['cmd_sweep_',num2str(i)];
@@ -33,5 +33,5 @@ xlabel('v_x')
 ylabel('v_y')
 zlabel('\omega_z')
 
-% save('cmpc_data.mat','cmds')
+save('cmpc_data.mat','cmds')
 
