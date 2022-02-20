@@ -4,10 +4,11 @@ tol = 1e-6;
 nearZero = @(x,tol) norm(x) < tol;
 var_tol = 1.0;
 % RS_path = 'data/RS/2022-02-08_14-25-37/';
-BO_path = '../BO/cmpc_sweep/';
-
+CMPC_path = 'BO/cmpc_sweep/';
+BO_path = 'BO/2022-02-18_20-42-15/'
 % RS_files = dir(strcat(RS_path,'*.bin'));
-BO_files = dir(strcat(BO_path,'*.json'));
+BO_files = dir(strcat(BO_path, '*.json'));
+CMPC_files = dir(strcat(CMPC_path, '*.json'));
 n_trials = numel(BO_files);
 cmd_sweep = readmatrix('../BO/cmpc_sweep/cmd_sweep.csv');
 cmd_sweep = cmd_sweep(1:n_trials, :);  % only keep relevant ones

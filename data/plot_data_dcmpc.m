@@ -1,8 +1,8 @@
 clear; clc;
 
 %% select data files
-filename = 'cmd_sweep_1';
-date = '2022-02-15_16-46-38/';
+filename = 'cmd_sweep_150';
+date = '2022-02-18_10-09-28/';
 RS_data = append('RS/',date,filename,'.bin');
 BO_data = append('BO/',date,filename,'.json');
 addpath(genpath('plotting_functions'));

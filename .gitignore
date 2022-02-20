@@ -6,6 +6,8 @@
 *.json
 *.pyc
 
+!data/cmd_sweep.csv
+
 .venv-BO/*
 
 # Prerequisites
