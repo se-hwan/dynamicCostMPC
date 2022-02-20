@@ -133,7 +133,7 @@ for cmd_idx in range(0, command_count):
             print("Iteration: %3d Target value: %6.5f" % (iteration+1, target))
             iteration += 1
         
-        if (abs(target-max_target) < conv_tol and iteration > 50):
+        if (abs(target-max_target) < conv_tol and iteration > 25):
             print("Improvement tolerance reached, exiting loop...")
             break
 

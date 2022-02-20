@@ -4,7 +4,7 @@ clc
 
 %% select data file
 date_cmpc = 'cmpc_sweep/';
-date_bo = '2022-02-20_15-46-52/';
+date_bo = '2022-02-18_10-09-28/';
 cmpc_cmds = readmatrix(['BO/',date_cmpc,'cmd_sweep.csv']);
 addpath(genpath('utility_functions'));
 bo_cmds = readmatrix(['BO/',date_bo, 'cmd_sweep.csv']);

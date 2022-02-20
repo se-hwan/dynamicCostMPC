@@ -6,6 +6,7 @@
 *.json
 *.pyc
 
+!data/bases/*
 !data/cmd_sweep.csv
 
 .venv-BO/*
