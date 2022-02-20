@@ -122,7 +122,7 @@ for cmd_idx in range(0, command_count):
     optimizer._prime_queue(iter_rand)
     iteration = 0
     max_target = 0
-    conv_tol = 0.001
+    conv_tol = 0.005
     expected_improvement = 99999.
     while not optimizer._queue.empty or iteration < iter_max:
         target = 0

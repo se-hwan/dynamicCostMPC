@@ -38,7 +38,13 @@ load("cmpc_data.mat")
 N_success = length(cmpc_data.success(:,1));
 
 cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
-cmd_sweep(N_success+1:end, :) = cmpc_data.fail_sorted(1:(N_s-N_success), 1:3);
+
+cmd_points_manual = [3.25 0 0; 3.5 0 0; 3.75 0 0; 4.0 0 0; 4.25 0 0];
+cmd_points_manual = [cmd_points_manual; -cmd_points_manual];
+N_m = length(cmd_points_manual(:,1));
+
+cmd_sweep(N_success+1:N_success+N_m,:) = cmd_points_manual;
+cmd_sweep(N_success+1+N_m:end, :) = cmpc_data.fail_sorted(1:(N_s-N_success-N_m), 1:3);
 
 figure;
 hold on; grid on; axis equal;
