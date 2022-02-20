@@ -113,8 +113,13 @@ for cmd_idx in range(0, command_count):
     
     utility = UtilityFunction(kind="ucb", kappa=2.0, xi=0.0)
 
-    optimizer._prime_queue(iter_rand)
+    optimizer.probe(
+        params=[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], # probe standard cMPC matrix first
+        lazy=False,
+    )
+    print("Max value from cMPC: %6.5f" % (optimizer.max['target']))
 
+    optimizer._prime_queue(iter_rand)
     iteration = 0
     max_target = 0
     conv_tol = 0.001

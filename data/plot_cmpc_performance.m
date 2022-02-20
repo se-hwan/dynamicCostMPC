@@ -3,8 +3,8 @@ close all
 clc
 
 %% select data file
-date_cmpc = 'cmpc_sweep/';
-date_bo = '2022-02-18_10-09-28/';
+date_cmpc = 'cmpc_sweep_grid/';
+date_bo = 'dataset_Q_basis_00/';
 cmpc_cmds = readmatrix(['BO/',date_cmpc,'cmd_sweep.csv']);
 addpath(genpath('utility_functions'));
 bo_cmds = readmatrix(['BO/',date_bo, 'cmd_sweep.csv']);
@@ -39,7 +39,7 @@ end
 
 %% plotting
 
-figure(1); hold on
+figure; hold on
 plot3(cmpc_cmds(cmpc_cmds(:,4) == 1,1),cmpc_cmds(cmpc_cmds(:,4) == 1,2),cmpc_cmds(cmpc_cmds(:,4) == 1,3),'r+')
 plot3(bo_cmds(bo_cmds(:,4) == 1,1),bo_cmds(bo_cmds(:,4) == 1,2),bo_cmds(bo_cmds(:,4) == 1,3),'bd')
 % plot3(cmpc_cmds(cmpc_cmds(:,4) == 0,1),cmpc_cmds(cmpc_cmds(:,4) == 0,2),cmpc_cmds(cmpc_cmds(:,4) == 0,3),'rx')
@@ -48,7 +48,7 @@ xlabel('v_x')
 ylabel('v_y')
 zlabel('\omega_z')
 % legend('cMPC', 'BO')
-% save('cmpc_sweep.mat','cmpc_cmds')
+save('cmpc_sweep.mat','cmpc_cmds')
 
 figure; hold on;
 plot(sort(cmpc_cmds([find(cmpc_cmds(:,5)>0)], 5)))

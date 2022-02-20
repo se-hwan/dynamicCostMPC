@@ -10,7 +10,7 @@ omega_max = 7.0; % 7.5
 cmd_sweep = zeros(N_s, 3);
 
 %% load cmpc range
-load("cmpc_cmds.mat")
+load("cmpc_data.mat")
 
 %% sampling options
 
@@ -28,18 +28,24 @@ load("cmpc_cmds.mat")
 %     wz_samp = omega_max*rand;
 %     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 % end
+% vx_ls = linspace(-vx_max, vx_max, 20); % uniform grid
+% vy_ls = linspace(0, vy_max, 10);
+% wz_ls = linspace(0, omega_max, 10);
+% [vx_grid, vy_grid, wz_grid] = meshgrid(vx_ls, vy_ls, wz_ls);
+% cmd_sweep = [vx_grid(:) vy_grid(:) wz_grid(:)];
 
-N_success = length(cmpc_cmds.success(:,1));
 
-cmd_sweep(1:N_success,:) = cmpc_cmds.success;
-cmd_sweep(N_success+1:end, :) = cmpc_cmds.fail_sorted(1:(N_s-N_success), :);
+N_success = length(cmpc_data.success(:,1));
+
+cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
+cmd_sweep(N_success+1:end, :) = cmpc_data.fail_sorted(1:(N_s-N_success), 1:3);
 
 figure;
-hold on; grid on;
+hold on; grid on; axis equal;
 xlabel('v_x (m/s)'); ylabel('v_y (m/s)'); zlabel('\omega_z (rad/s)')
 plot3(linspace(-vx_max, vx_max, 10),zeros(1, 10),zeros(1, 10),'r--')
 plot3(zeros(1, 10),linspace(-vy_max, vy_max, 10),zeros(1, 10),'g--')
-plot3(zeros(1, 10), zeros(1, 10),linspace(-omega_max, omega_max, 10),'c--')
+plot3(zeros(1, 10), zeros(1, 10),linspace(-omega_max, omega_max, 10),'b--')
 for i = 1:N_s
     plot3(cmd_sweep(i, 1), cmd_sweep(i,2), cmd_sweep(i,3), 'k.')
 end
