@@ -96,7 +96,7 @@ for cmd_idx in range(0, command_count):
         param_id = 'p' + '{:0>2}'.format(i)
         key.append(param_id)
 
-    bounds = (0, 100)
+    bounds = (0.0001, 100)
     for i in key:
         p_bounds[i] = bounds 
 
@@ -153,6 +153,9 @@ for cmd_idx in range(0, command_count):
     if (steady_state < 0.5): # rename file if steady state velocity command not reached
         os.rename(file_name_BO+'.json', file_name_BO + '_fail.json')
         os.rename(file_name_RS+'.bin', file_name_RS + '_fail.bin')
+        print("Run failed!")
+    else:
+        print("Run successful!")
 
     # output total time taken for one iteration of velocity command
     elapsed = time.time() - t

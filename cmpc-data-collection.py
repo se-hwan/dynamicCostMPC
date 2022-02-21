@@ -57,7 +57,7 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
         command_count += 1
 
 # choose desired rate of increase in commands
-ramp_rate = [0.5, 0.5, 1.0]
+ramp_rate = [0.5, 0.5, 0.5]
 
 print('Sweep over velocity commands successfully loaded! ', command_count, ' velocity commands are prepared.')
 print('Commands set to increase at rate: ', ramp_rate)
@@ -98,7 +98,7 @@ for cmd_idx in range(0, command_count):
                                      pbounds=p_bounds,
                                      verbose=2,
                                      random_state=1)
-    optimizer.maximize(init_points=0, n_iter=0)
+    #optimizer.maximize(init_points=0, n_iter=0)
 
     # setup data filenames
     file_name_BO = folder_name_BO + "/cmd_sweep_" + str(cmd_idx+1)
@@ -112,10 +112,14 @@ for cmd_idx in range(0, command_count):
     if (steady_state < 0.5): # rename file if steady state velocity command not reached
         os.rename(file_name_BO+'.json', file_name_BO + '_fail.json')
         os.rename(file_name_RS+'.bin', file_name_RS + '_fail.bin')
+        print("Runs failed!")
+    else:
+        print("Successful run!")
 
     # output total time taken for one iteration of velocity command
     elapsed = time.time() - t
     print("Time taken for iteration ", cmd_idx+1, ": ", elapsed, " s")
+    print("Reward: ", optimizer.max['target'], "\n")
     
     # reset steady state flag
     steady_state = 0

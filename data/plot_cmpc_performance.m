@@ -4,7 +4,7 @@ clc
 
 %% select data file
 date_cmpc = 'cmpc_sweep_grid/';
-date_bo = 'dataset_Q_basis_00/';
+date_bo = 'eval_fit_poly8_weighted/';
 cmpc_cmds = readmatrix(['BO/',date_cmpc,'cmd_sweep.csv']);
 addpath(genpath('utility_functions'));
 bo_cmds = readmatrix(['BO/',date_bo, 'cmd_sweep.csv']);

@@ -1,18 +1,19 @@
 clear; clc;
 
 %% select data files
-filename = 'cmd_sweep_150';
-date = '2022-02-18_10-09-28/';
+filename = 'DCMPC_sim_data';
+date = 'cmpc_sweep_grid/';
+date = '';
 RS_data = append('RS/',date,filename,'.bin');
 BO_data = append('BO/',date,filename,'.json');
 addpath(genpath('plotting_functions'));
 
 %% load and parse data
 [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
-[max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
+% [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
 %% plot states and commands
-plot_states(time, state, cmd, max_idx);
+plot_states(time, state, cmd, 0);
 
 %% compare optimal Q values 
 
