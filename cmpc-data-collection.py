@@ -105,16 +105,16 @@ for cmd_idx in range(0, command_count):
     file_name_RS = folder_name_RS + "/cmd_sweep_" + str(cmd_idx+1) 
     logger = JSONLogger(path=file_name_BO+'.json')
     optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
-    optimizer.maximize(init_points=5, n_iter=0, acq="ucb", kappa=0.5)  # when running standard cMPC
+    optimizer.maximize(init_points=3, n_iter=0, acq="ucb", kappa=0.5)  # when running standard cMPC
 
     print("Bayesian optimization complete! Saving results...")
     os.replace('./data/RS/DCMPC_sim_data.bin', file_name_RS+'.bin')
-    if (steady_state < 0.5): # rename file if steady state velocity command not reached
+    if (steady_state < 3): # rename file if steady state velocity command not reached
         os.rename(file_name_BO+'.json', file_name_BO + '_fail.json')
         os.rename(file_name_RS+'.bin', file_name_RS + '_fail.bin')
         print("Runs failed!")
     else:
-        print("Successful run!")
+        print("Run successful!")
 
     # output total time taken for one iteration of velocity command
     elapsed = time.time() - t

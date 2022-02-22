@@ -2,15 +2,14 @@ clear; clc;
 
 %% select data files
 filename = 'DCMPC_sim_data';
-date = 'cmpc_sweep_grid/';
-date = '';
-RS_data = append('RS/',date,filename,'.bin');
-BO_data = append('BO/',date,filename,'.json');
+date = 'Qsum_basis00_random/';
+% RS_data = append('RS/old_data',date,filename,'.bin');
+BO_data = append('BO/old_data/',date,filename,'.json');
 addpath(genpath('plotting_functions'));
 
 %% load and parse data
-[N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
-% [max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
+% [N_runs, iter, time, cmd, state]                           = loadData_RS(RS_data);
+[max_target, max_idx, max_param, target_val, param_val]    = loadData_BO(BO_data);
 
 %% plot states and commands
 plot_states(time, state, cmd, 0);

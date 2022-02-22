@@ -145,7 +145,7 @@ for cmd_idx in range(0, command_count):
             print("Improvement tolerance reached, exiting loop...")
             break
 
-        if (max_target > 1.95):
+        if (max_target > 1.99):
             print("Improvement marginal, exiting loop...")
             break
 
@@ -153,7 +153,7 @@ for cmd_idx in range(0, command_count):
         #     print("Improvement tolerance reached, exiting loop...")
         #     break
         max_target = optimizer.max['target']
-        
+
     optimizer.dispatch(Events.OPTIMIZATION_END)
     print("Bayesian optimization complete! Saving results...")
     os.replace('./data/RS/DCMPC_sim_data.bin', file_name_RS+'.bin')
