@@ -28,17 +28,17 @@ load("cmpc_data.mat")
 %     wz_samp = omega_max*rand;
 %     cmd_sweep(i,:) = [vx_samp, vy_samp, wz_samp];
 % end
-% vx_ls = linspace(-vx_max, vx_max, 13); % uniform grid
-% vy_ls = linspace(0, vy_max, 11);
-% wz_ls = linspace(0, omega_max, 9);
-% [vx_grid, vy_grid, wz_grid] = meshgrid(vx_ls, vy_ls, wz_ls);
-% cmd_sweep = [vx_grid(:) vy_grid(:) wz_grid(:)];
+vx_ls = linspace(-vx_max, vx_max, 13); % uniform grid
+vy_ls = linspace(0, vy_max, 11);
+wz_ls = linspace(0, omega_max, 9);
+[vx_grid, vy_grid, wz_grid] = meshgrid(vx_ls, vy_ls, wz_ls);
+cmd_sweep = [vx_grid(:) vy_grid(:) wz_grid(:)];
 
-N_success = length(cmpc_data.success(:,1));
-
-cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
-sampled_failures = zeros(N_s-N_success, 3);
-cmd_sweep(N_success+1:end, :) = cmpc_data.fail_sorted(1:(N_s-N_success), 1:3);
+% N_success = length(cmpc_data.success(:,1));
+% 
+% cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
+% sampled_failures = zeros(N_s-N_success, 3);
+% cmd_sweep(N_success+1:end, :) = cmpc_data.fail_sorted(1:(N_s-N_success), 1:3);
 
 figure;
 hold on; grid on;
@@ -46,9 +46,9 @@ xlabel('v_x (m/s)'); ylabel('v_y (m/s)'); zlabel('\omega_z (rad/s)')
 plot3(linspace(-vx_max, vx_max, 10),zeros(1, 10),zeros(1, 10),'r--')
 plot3(zeros(1, 10),linspace(-vy_max, vy_max, 10),zeros(1, 10),'g--')
 plot3(zeros(1, 10), zeros(1, 10),linspace(-omega_max, omega_max, 10),'b--')
-% plot3(cmd_sweep(:,1), cmd_sweep(:,2), cmd_sweep(:,3), 'k.')
-plot3(cmd_sweep(1:N_success,1), cmd_sweep(1:N_success,2), cmd_sweep(1:N_success,3), 'b.')
-plot3(cmd_sweep(N_success+1:N_s,1), cmd_sweep(N_success+1:N_s,2), cmd_sweep(N_success+1:N_s,3), 'r.')
+plot3(cmd_sweep(:,1), cmd_sweep(:,2), cmd_sweep(:,3), 'k.')
+% plot3(cmd_sweep(1:N_success,1), cmd_sweep(1:N_success,2), cmd_sweep(1:N_success,3), 'b.')
+% plot3(cmd_sweep(N_success+1:N_s,1), cmd_sweep(N_success+1:N_s,2), cmd_sweep(N_success+1:N_s,3), 'r.')
 axis([-vx_max*1.1, vx_max*1.1, 0, vy_max*1.1, 0, omega_max*1.1])
 
 %% save 3D command sweep

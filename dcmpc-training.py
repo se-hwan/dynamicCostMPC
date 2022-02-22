@@ -57,7 +57,7 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
         command_count += 1
 
 # choose desired rate of increase in commands
-ramp_rate = [0.5, 0.5, 1.0]
+ramp_rate = [0.5, 0.5, 0.5]
 
 # number of initial (random) points and maximum points to evalute
 iter_rand = 25
@@ -68,6 +68,8 @@ print('Commands set to increase at rate: ', ramp_rate)
 print('Beginning Bayesian optimization process...')
 print('Random initial points to evaluate: ', iter_rand)
 print('Maximum points to evaluate: ', iter_max)
+
+training_start = time.time()
 
 for cmd_idx in range(0, command_count):
 
@@ -111,7 +113,8 @@ for cmd_idx in range(0, command_count):
     logger = JSONLogger(path=file_name_BO+'.json')
     optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
     
-    utility = UtilityFunction(kind="ucb", kappa=2.0, xi=0.0)
+    #utility = UtilityFunction(kind="ucb", kappa=2.0, xi=0.0)
+    utility = UtilityFunction(kind="ei", kappa=0.0, xi=1e-3)
 
     optimizer.probe(
         params=[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], # probe standard cMPC matrix first
@@ -142,11 +145,15 @@ for cmd_idx in range(0, command_count):
             print("Improvement tolerance reached, exiting loop...")
             break
 
+        if (max_target > 1.95):
+            print("Improvement marginal, exiting loop...")
+            break
+
         # if (expected_improvement - optimizer._space.target.max()) < conv_tol:
         #     print("Improvement tolerance reached, exiting loop...")
         #     break
-
         max_target = optimizer.max['target']
+        
     optimizer.dispatch(Events.OPTIMIZATION_END)
     print("Bayesian optimization complete! Saving results...")
     os.replace('./data/RS/DCMPC_sim_data.bin', file_name_RS+'.bin')
@@ -162,3 +169,6 @@ for cmd_idx in range(0, command_count):
     print("Time taken for iteration ", cmd_idx+1, ": ", elapsed, " s\n")
     # reset steady state flag
     steady_state = 0
+
+training_end = time.time()-training_start
+print("Total time taken: ", training_end, " s.")

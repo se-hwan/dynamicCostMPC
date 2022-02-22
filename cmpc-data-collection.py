@@ -105,7 +105,7 @@ for cmd_idx in range(0, command_count):
     file_name_RS = folder_name_RS + "/cmd_sweep_" + str(cmd_idx+1) 
     logger = JSONLogger(path=file_name_BO+'.json')
     optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
-    optimizer.maximize(init_points=1, n_iter=0, acq="ucb", kappa=0.5)  # when running standard cMPC
+    optimizer.maximize(init_points=5, n_iter=0, acq="ucb", kappa=0.5)  # when running standard cMPC
 
     print("Bayesian optimization complete! Saving results...")
     os.replace('./data/RS/DCMPC_sim_data.bin', file_name_RS+'.bin')
