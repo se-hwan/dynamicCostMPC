@@ -148,12 +148,12 @@ for w in hl_reward_weights:
 
         optimizer._prime_queue(iter_rand)
         iteration = 0
-        max_target = 0
+        max_target = optimizer.max['target']
         conv_tol = 0.005
         expected_improvement = 99999.
         while not optimizer._queue.empty or iteration < iter_max:
             target = 0
-            if (max_target > 1.99):
+            if (max_target > 1.90):
                 print("Improvement marginal, exiting loop...")
                 break
             try:
