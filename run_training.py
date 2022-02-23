@@ -60,8 +60,8 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
 ramp_rate = [0.5, 0.5, 0.5]
 
 # number of initial (random) points and maximum points to evalute
-iter_rand = 25
-iter_max = 200
+iter_rand = 100
+iter_max = 0
 
 print('Sweep over velocity commands successfully loaded! ', command_count, ' velocity commands are prepared.')
 print('Commands set to increase at rate: ', ramp_rate)
@@ -69,7 +69,7 @@ print('Beginning Bayesian optimization process...')
 print('Random initial points to evaluate: ', iter_rand)
 print('Maximum points to evaluate: ', iter_max)
 
-hl_reward_weights = [0.05, 0.25, 0.5]
+hl_reward_weights = [0.05, 0.25, 0.5, 0.75]
 eigenbases = [0, 1, 2, 3, 4]
 
 training_start = time.time()
@@ -153,6 +153,9 @@ for w in hl_reward_weights:
         expected_improvement = 99999.
         while not optimizer._queue.empty or iteration < iter_max:
             target = 0
+            if (max_target > 1.99):
+                print("Improvement marginal, exiting loop...")
+                break
             try:
                 x_probe = next(optimizer._queue)
                 optimizer.probe(x_probe, lazy=False)
@@ -167,10 +170,6 @@ for w in hl_reward_weights:
             
             if (abs(target-max_target) < conv_tol and iteration > 25):
                 print("Improvement tolerance reached, exiting loop...")
-                break
-
-            if (max_target > 1.99):
-                print("Improvement marginal, exiting loop...")
                 break
 
             # if (expected_improvement - optimizer._space.target.max()) < conv_tol:
