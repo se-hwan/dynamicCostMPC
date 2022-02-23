@@ -1,14 +1,14 @@
 clear; clc;
 
 %% 3D velocity command sweep
-N_s = 192; % velocity command samples
+N_s = 92; % velocity command samples
 
 vx_max = 4.5; % 4,5
 vy_max = 3.0; % 3.5
 omega_max = 8.0; % 7.5
 
 gen_cmpc_commands = false;
-save_cmd_sweep = true;
+save_cmd_sweep = false;
 
 %% command sampling
 
@@ -25,9 +25,9 @@ else
     load("cmpc_data.mat")
     N_success = length(cmpc_data.success(:,1));
     cmd_sweep = zeros(N_s, 3);
-    cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
+%     cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
     sampled_failures = zeros(N_s-N_success, 3);
-    cmd_sweep(N_success+1:end, :) = cmpc_data.fail_sorted(1:(N_s-N_success), 1:3);
+    cmd_sweep(1:N_s, :) = cmpc_data.fail_sorted(1:N_s, 1:3);
     
     manual_cmds = [[3.25:.25:4.0]' zeros(4,2)];
     cmd_sweep = [cmd_sweep; manual_cmds; -manual_cmds];

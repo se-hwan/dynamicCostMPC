@@ -51,8 +51,8 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
 ramp_rate = [0.5, 0.5, 0.5]
 
 # number of initial (random) points and maximum points to evalute
-iter_rand = 100
-iter_max = 0
+iter_rand = 5
+iter_max = 100
 
 print('Sweep over velocity commands successfully loaded! ', command_count, ' velocity commands are prepared.')
 print('Commands set to increase at rate: ', ramp_rate)
@@ -122,7 +122,7 @@ for w in hl_reward_weights:
             param_id = 'p' + '{:0>2}'.format(i)
             key.append(param_id)
 
-        bounds = (0.0001, 100)
+        bounds = (-0.00000001, 10.)
         for i in key:
             p_bounds[i] = bounds 
 
@@ -138,7 +138,8 @@ for w in hl_reward_weights:
         optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
         
         #utility = UtilityFunction(kind="ucb", kappa=2.0, xi=0.0)
-        utility = UtilityFunction(kind="ei", kappa=0.0, xi=1e-3)
+        # utility = UtilityFunction(kind="ei", kappa=0.0, xi=1e-1)
+        utility = UtilityFunction(kind="ei", kappa=5., kappa_decay=0.5, kappa_decay_delay=25, xi=0.1)
 
         optimizer.probe(
             params=[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], # probe standard cMPC matrix first
@@ -153,13 +154,14 @@ for w in hl_reward_weights:
         expected_improvement = 99999.
         while not optimizer._queue.empty or iteration < iter_max:
             target = 0
-            if (max_target > 1.90):
+            if (max_target > 1.8):
                 print("Improvement marginal, exiting loop...")
                 break
             try:
                 x_probe = next(optimizer._queue)
                 optimizer.probe(x_probe, lazy=False)
-                print("Max value from random search: %6.5f" % (optimizer.max['target']))
+                print("RandSearch max val: %6.5f" % (optimizer.max['target']))
+                # print("this iter val: %6.5f" % target)
             except StopIteration:
                 utility.update_params()
                 x_probe, expected_improvement = optimizer.suggest(utility)

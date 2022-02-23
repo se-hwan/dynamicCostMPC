@@ -60,8 +60,8 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
 ramp_rate = [0.5, 0.5, 0.5]
 
 # number of initial (random) points and maximum points to evalute
-iter_rand = 100
-iter_max = 0
+iter_rand = 25
+iter_max = 150
 
 print('Sweep over velocity commands successfully loaded! ', command_count, ' velocity commands are prepared.')
 print('Commands set to increase at rate: ', ramp_rate)
@@ -124,12 +124,12 @@ for cmd_idx in range(0, command_count):
 
     optimizer._prime_queue(iter_rand)
     iteration = 0
-    max_target = 0
+    max_target = optimizer.max['target']
     conv_tol = 0.005
     expected_improvement = 99999.
     while not optimizer._queue.empty or iteration < iter_max:
         target = 0
-        if (max_target > 1.90):
+        if (max_target > 1.80):
             print("Improvement marginal, exiting loop...")
             break
 
@@ -148,7 +148,7 @@ for cmd_idx in range(0, command_count):
         if (abs(target-max_target) < conv_tol and iteration > 25):
             print("Improvement tolerance reached, exiting loop...")
             break
-        
+
         # if (expected_improvement - optimizer._space.target.max()) < conv_tol:
         #     print("Improvement tolerance reached, exiting loop...")
         #     break
