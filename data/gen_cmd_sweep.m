@@ -26,7 +26,7 @@ else
     N_success = length(cmpc_data.success(:,1));
     cmd_sweep = zeros(N_s, 3);
 %     cmd_sweep(1:N_success,:) = cmpc_data.success(:,1:3);
-    sampled_failures = zeros(N_s-N_success, 3);
+%     sampled_failures = zeros(N_s-N_success, 3);
     cmd_sweep(1:N_s, :) = cmpc_data.fail_sorted(1:N_s, 1:3);
     
     manual_cmds = [[3.25:.25:4.0]' zeros(4,2)];

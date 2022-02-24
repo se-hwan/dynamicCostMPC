@@ -61,11 +61,21 @@ print('Random initial points to evaluate: ', iter_rand)
 print('Maximum points to evaluate: ', iter_max)
 
 hl_reward_weights = [0.05, 0.25, 0.5, 0.75]
-eigenbases = [0, 1, 2, 3, 4]
+eigenbases = [1, 2]
 
 training_start = time.time()
 
 '''
+for w in hl_reward_weights:
+    # overwrite yaml file with new weights
+    with open('../config/DCMPC-training.yaml') as f:
+        list_doc = yaml.safe_load(f)
+    list_doc['hl_reward_weight'] = w
+    with open('../config/DCMPC-training.yaml','w') as f:
+        yaml.dump(list_doc, f, default_flow_style=False)
+    print("High level reward weight: ", w, "\n")
+'''
+
 for basis in eigenbases:
     # overwrite yaml file with basis choice
     with open('../config/DCMPC-training.yaml') as f:
@@ -75,17 +85,6 @@ for basis in eigenbases:
     with open('../config/DCMPC-training.yaml','w') as f:
         yaml.dump(list_doc, f, default_flow_style=False)
     print("Eigenbasis used: ", basis_filename, "\n")
-'''
-
-for w in hl_reward_weights:
-    # overwrite yaml file with new weights
-    with open('../config/DCMPC-training.yaml') as f:
-        list_doc = yaml.safe_load(f)
-    list_doc['hl_reward_weight'] = w
-    with open('../config/DCMPC-training.yaml','w') as f:
-        yaml.dump(list_doc, f, default_flow_style=False)
-    print("High level reward weight: ", w, "\n")
-
     # create timestamped folders for data collection
     folder_name_BO = os.path.join(os.getcwd() + "/data/BO", datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     folder_name_RS = os.path.join(os.getcwd() + "/data/RS", datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
@@ -138,8 +137,8 @@ for w in hl_reward_weights:
         optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
         
         #utility = UtilityFunction(kind="ucb", kappa=2.0, xi=0.0)
-        # utility = UtilityFunction(kind="ei", kappa=0.0, xi=1e-1)
-        utility = UtilityFunction(kind="ei", kappa=5., kappa_decay=0.5, kappa_decay_delay=25, xi=0.1)
+        utility = UtilityFunction(kind="ei", kappa=0.0, xi=1e-3)
+        # utility = UtilityFunction(kind="ei", kappa=5., kappa_decay=0.5, kappa_decay_delay=25, xi=0.1)
 
         optimizer.probe(
             params=[0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.], # probe standard cMPC matrix first
