@@ -9,9 +9,11 @@ plot_parsed_cmds = true;
 %% select data file
 cmpc_folder = 'cmpc_sweep_grid/';
 cmpc_cmds = readmatrix(['BO/',cmpc_folder,'cmd_sweep.csv']);
+bo_folder = 'alpha025_BO_basis00_Feb23/';
+bo_cmds = readmatrix(['BO/', bo_folder, 'cmd_sweep.csv']);
 
 if isfile("cmpc_data.mat")
-%     load_data = false;
+    load_data = false;
 end
 
 %% check for success/fail
@@ -37,22 +39,20 @@ else
     cmpc_cmds = cmpc_data.sweep;
 end
 
+N_BO = length(bo_cmds(:,1));
+bo_cmds(:,4) = ones(N_BO, 1);
+for i = 1:N_BO
+    try
+        filename = ['cmd_sweep_',num2str(i)];
+        BO_data = append('BO/',bo_folder,filename,'.json');
+        [bo_cmds(i, 5), ~, ~, ~, ~] = loadData_BO(BO_data);
+    catch
+        bo_cmds(i,4) = 0;
+        bo_cmds(i,5) = 0;
+    end
+end
 
-
-% bo_filename = 'Qsum_basis00_ei/';
-% bo_cmds = readmatrix(['BO/', bo_filename, 'cmd_sweep.csv']);
-% 
-%     for i = 1:N_BO
-%         try
-%             filename = ['cmd_sweep_',num2str(i)];
-%             BO_data = append('BO/',date_bo,filename,'.json');
-%             [bo_cmds(i, 5), ~, ~, ~, ~] = loadData_BO(BO_data);
-%         catch
-%             bo_cmds(i,4) = 0;
-%             bo_cmds(i,5) = 0;
-%         end
-%     end
-
+size(find(bo_cmds(:,4)==1))
 
 %% parse commands
 save("cmpc_data.mat", "cmpc_data")
@@ -60,7 +60,7 @@ save("cmpc_data.mat", "cmpc_data")
 %% plotting
 figure; hold on
 plot3(cmpc_data.success(:, 1), cmpc_data.success(:, 2), cmpc_data.success(:, 3), 'r*')
-% plot3(bo_cmds(bo_cmds(:,4) == 1,1),bo_cmds(bo_cmds(:,4) == 1,2),bo_cmds(bo_cmds(:,4) == 1,3),'bd')
+plot3(bo_cmds(bo_cmds(:,4) == 1,1),bo_cmds(bo_cmds(:,4) == 1,2),bo_cmds(bo_cmds(:,4) == 1,3),'bd')
 grid on
 xlabel('v_x')
 ylabel('v_y')

@@ -38,7 +38,7 @@ end
 disp("Random orthogonal basis vectors");
 disp(basis);
 
-test = basis*diag(randn(1, N_basis))*basis';
+test = basis*diag(rand(1, N_basis))*basis';
 try chol(test)
     disp('Matrix is symmetric positive definite.')
 catch ME

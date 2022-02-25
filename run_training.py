@@ -51,7 +51,7 @@ with open('./data/cmd_sweep.csv',newline='') as csvfile:
 ramp_rate = [0.5, 0.5, 0.5]
 
 # number of initial (random) points and maximum points to evalute
-iter_rand = 5
+iter_rand = 25
 iter_max = 100
 
 print('Sweep over velocity commands successfully loaded! ', command_count, ' velocity commands are prepared.')
@@ -61,7 +61,7 @@ print('Random initial points to evaluate: ', iter_rand)
 print('Maximum points to evaluate: ', iter_max)
 
 hl_reward_weights = [0.05, 0.25, 0.5, 0.75]
-eigenbases = [1, 2]
+eigenbases = [5, 6, 7, 8, 9]
 
 training_start = time.time()
 
@@ -121,7 +121,7 @@ for basis in eigenbases:
             param_id = 'p' + '{:0>2}'.format(i)
             key.append(param_id)
 
-        bounds = (-0.00000001, 10.)
+        bounds = (0.0001, 100.)
         for i in key:
             p_bounds[i] = bounds 
 
@@ -153,7 +153,7 @@ for basis in eigenbases:
         expected_improvement = 99999.
         while not optimizer._queue.empty or iteration < iter_max:
             target = 0
-            if (max_target > 1.8):
+            if (max_target > 1.95):
                 print("Improvement marginal, exiting loop...")
                 break
             try:
