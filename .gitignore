@@ -8,6 +8,7 @@
 
 !data/bases/*
 !data/cmd_sweep.csv
+!data/cmd_sweep_combined.csv
 
 .venv-BO/*
 
